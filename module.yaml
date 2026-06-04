@@ -1,0 +1,17 @@
+package: larena/update-client
+title: Larena Update Client
+status: repository_prepared
+cluster: update-delivery
+batch: batch-0-clean-pre-codegen-baseline
+features:
+  - update.admin_diagnostics
+  - update.artifact_verification
+  - update.entitlement_proxy
+  - update.installer_orchestration
+  - update.manifest_plan
+  - update.preflight_rollback
+runtime:
+  php: "^8.3"
+  laravel: "^13.0"
+evidence:
+  path: docs/project-management/evidence/update-delivery/batch-0/update-client-clean-baseline/
