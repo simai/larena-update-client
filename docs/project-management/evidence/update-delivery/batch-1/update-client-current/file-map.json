@@ -1,0 +1,41 @@
+{
+  "schema": "larena.evidence_file_map.v1",
+  "package": "larena/update-client",
+  "batch": "update-delivery/batch-1/update-client-current",
+  "launch_record_ref": "specs/implementation-planning/launch-records/update-client-batch-1-contract-skeletons-current.json",
+  "source_files": [
+    "src/Contracts/ArtifactVerificationResult.php",
+    "src/Contracts/EntitlementSnapshot.php",
+    "src/Contracts/PreflightResult.php",
+    "src/Contracts/RollbackBoundary.php",
+    "src/Contracts/UpdateAdminDiagnostics.php",
+    "src/Contracts/UpdateClientRuntime.php",
+    "src/Contracts/UpdateManifest.php",
+    "src/Contracts/UpdatePlan.php",
+    "src/Enums/ArtifactVerificationStatus.php",
+    "src/Enums/PreflightStatus.php",
+    "src/Enums/UpdatePlanStatus.php"
+  ],
+  "test_files": [
+    "tests/Unit/UpdateClientContractTest.php",
+    "tests/Unit/UpdateClientFailsClosedTest.php"
+  ],
+  "support_files": [
+    ".larena/launch-context.json",
+    "phpstan.neon.dist",
+    "scripts/lint.php",
+    "scripts/test-placeholder.php",
+    "scripts/validate-larena-package.php"
+  ],
+  "evidence_files": [
+    "README.md",
+    "implementation-summary.md",
+    "tests.md",
+    "smoke.md",
+    "file-map.json",
+    "deviations.json",
+    "graph-sync-proposal.json",
+    "independent-review.md",
+    "code-review-feedback.md"
+  ]
+}

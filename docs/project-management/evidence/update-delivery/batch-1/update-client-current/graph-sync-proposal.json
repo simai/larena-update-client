@@ -1,0 +1,27 @@
+{
+  "schema": "larena.graph_sync_proposal.v1",
+  "package": "larena/update-client",
+  "batch": "update-delivery/batch-1/update-client-current",
+  "canonical_update_allowed": false,
+  "canonical_update_requested": false,
+  "source_launch_record": "specs/implementation-planning/launch-records/update-client-batch-1-contract-skeletons-current.json",
+  "implemented_features": [
+    "update.entitlement_proxy",
+    "update.manifest_plan",
+    "update.artifact_verification",
+    "update.preflight_rollback",
+    "update.admin_diagnostics"
+  ],
+  "proposal": {
+    "type": "implementation_evidence_only",
+    "summary": "Record that update-client batch 1 contract skeletons implement the interface-first boundary without production update runtime.",
+    "requires_graph_change": false
+  },
+  "future_considerations": [
+    "Define machine-readable signed manifest schema examples and public-key rotation policy before network runtime.",
+    "Choose HTTP/update-server retry and offline-cache policy before adding a real client.",
+    "Add artifact extraction and filesystem staging fixtures before any artifact staging runtime.",
+    "Bind rollback/preflight to backup package evidence before installer mutation runtime.",
+    "Keep installer orchestration in a separate launch record with explicit mutation approvals."
+  ]
+}

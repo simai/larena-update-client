@@ -33,18 +33,51 @@ if (($specRef['canonical_update_allowed'] ?? null) !== false) {
 if (($launchContext['package'] ?? null) !== 'larena/update-client') {
     $errors[] = '.larena/launch-context.json package must be larena/update-client';
 }
-if (($launchContext['coding_started'] ?? null) !== false) {
-    $errors[] = 'coding_started must be false before a coding launch record.';
-}
 if (!str_starts_with((string) ($launchContext['evidence_path'] ?? ''), 'docs/project-management/evidence/')) {
     $errors[] = 'launch-context evidence_path must start with docs/project-management/evidence/';
 }
 if (!str_starts_with((string) ($launchContext['graph_sync_proposal_path'] ?? ''), (string) ($launchContext['evidence_path'] ?? '__missing__'))) {
     $errors[] = 'graph_sync_proposal_path must be inside evidence_path';
 }
-foreach (['src', 'config', 'database', 'routes', 'resources', 'tests', 'lang'] as $runtimePath) {
-    if (is_dir($runtimePath)) {
-        $errors[] = "{$runtimePath}/ is not allowed in this clean pre-codegen baseline commit.";
+$allowedStatuses = [
+    'repository_prepared_pending_review',
+    'coding_started',
+    'contract_skeleton_review_passed',
+];
+if (!in_array((string) ($launchContext['status'] ?? ''), $allowedStatuses, true)) {
+    $errors[] = 'launch-context status is not allowed for this package stage.';
+}
+$codingStarted = ($launchContext['coding_started'] ?? null) === true;
+if (!$codingStarted) {
+    foreach (['src', 'config', 'database', 'routes', 'resources', 'tests', 'lang'] as $runtimePath) {
+        if (is_dir($runtimePath)) {
+            $errors[] = "{$runtimePath}/ is not allowed before a coding launch record.";
+        }
+    }
+}
+if ($codingStarted) {
+    if (($launchContext['launch_record_ref'] ?? null) !== 'specs/implementation-planning/launch-records/update-client-batch-1-contract-skeletons-current.json') {
+        $errors[] = 'coding_started requires the current update-client batch 1 launch record.';
+    }
+    $requiredContractFiles = [
+        'src/Contracts/ArtifactVerificationResult.php',
+        'src/Contracts/EntitlementSnapshot.php',
+        'src/Contracts/PreflightResult.php',
+        'src/Contracts/RollbackBoundary.php',
+        'src/Contracts/UpdateAdminDiagnostics.php',
+        'src/Contracts/UpdateClientRuntime.php',
+        'src/Contracts/UpdateManifest.php',
+        'src/Contracts/UpdatePlan.php',
+        'src/Enums/ArtifactVerificationStatus.php',
+        'src/Enums/PreflightStatus.php',
+        'src/Enums/UpdatePlanStatus.php',
+        'tests/Unit/UpdateClientContractTest.php',
+        'tests/Unit/UpdateClientFailsClosedTest.php',
+    ];
+    foreach ($requiredContractFiles as $file) {
+        if (!is_file($file)) {
+            $errors[] = "Missing required update-client contract skeleton file: {$file}";
+        }
     }
 }
 if ($errors !== []) {
@@ -53,4 +86,6 @@ if ($errors !== []) {
     }
     exit(1);
 }
-echo "Larena Update Client clean pre-codegen baseline is valid.\n";
+echo $codingStarted
+    ? "Larena Update Client contract skeleton launch context is valid.\n"
+    : "Larena Update Client clean pre-codegen baseline is valid.\n";

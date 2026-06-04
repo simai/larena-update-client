@@ -1,0 +1,18 @@
+{
+  "schema": "larena.evidence_deviations.v1",
+  "package": "larena/update-client",
+  "batch": "update-delivery/batch-1/update-client-current",
+  "deviations": [],
+  "forbidden_behavior_confirmed_absent": [
+    "network_fetch_runtime",
+    "artifact_download_or_stage_runtime",
+    "installer_orchestration_runtime",
+    "filesystem_mutation_runtime",
+    "migration_execution_runtime",
+    "backup_runtime_integration",
+    "admin_ui_implementation",
+    "route_or_controller_runtime",
+    "direct_registration_server_contact",
+    "direct_larena_specs_update_by_package_agent"
+  ]
+}
