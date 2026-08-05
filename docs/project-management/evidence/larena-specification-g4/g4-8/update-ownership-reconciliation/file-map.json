@@ -2,7 +2,9 @@
   "schema": "larena.evidence_file_map.v1",
   "package": "larena/update-client",
   "batch": "larena-specification-g4/g4-8/update-ownership-reconciliation",
-  "source_revision": "pending_seal",
+  "source_revision": "1479490bbf97e892fd45bc9f3f0aa8b630fb836f",
+  "source_tree": "55773f5f72e82c260548a76326f99aba61511340",
+  "lockfile_sha256": "680bedd1ebd32872f938e21cb42675c4481d4b7c1416c37a814e8eba726f3787",
   "launch_record_ref": "specs/project-management/larena-g4-8-update-ownership-reconciliation-launch.json",
   "source_files": [
     "src/Contracts/EntitlementSnapshot.php",
