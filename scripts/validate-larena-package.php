@@ -43,6 +43,7 @@ $allowedStatuses = [
     'repository_prepared_pending_review',
     'coding_started',
     'contract_skeleton_review_passed',
+    'authorized_for_source_fixture_implementation',
 ];
 if (!in_array((string) ($launchContext['status'] ?? ''), $allowedStatuses, true)) {
     $errors[] = 'launch-context status is not allowed for this package stage.';
@@ -56,9 +57,9 @@ if (!$codingStarted) {
     }
 }
 if ($codingStarted) {
-    if (($launchContext['launch_record_ref'] ?? null) !== 'specs/implementation-planning/launch-records/update-client-batch-1-contract-skeletons-current.json') {
-        $errors[] = 'coding_started requires the current update-client batch 1 launch record.';
-    }
+    $contractSkeletonLaunch = 'specs/implementation-planning/launch-records/update-client-batch-1-contract-skeletons-current.json';
+    $ownershipReconciliationLaunch = 'specs/project-management/larena-g4-8-update-ownership-reconciliation-launch.json';
+    $launchRecord = (string) ($launchContext['launch_record_ref'] ?? '');
     $requiredContractFiles = [
         'src/Contracts/ArtifactVerificationResult.php',
         'src/Contracts/EntitlementSnapshot.php',
@@ -74,6 +75,48 @@ if ($codingStarted) {
         'tests/Unit/UpdateClientContractTest.php',
         'tests/Unit/UpdateClientFailsClosedTest.php',
     ];
+    if ($launchRecord === $ownershipReconciliationLaunch) {
+        if (($launchContext['status'] ?? null) !== 'authorized_for_source_fixture_implementation') {
+            $errors[] = 'G4.8 ownership reconciliation requires its authorized source-fixture status.';
+        }
+        if (($launchContext['base_commit'] ?? null) !== '9a3a75b8c88ed8490f9e58bac2916a75f4c1f854') {
+            $errors[] = 'G4.8 ownership reconciliation base commit differs from the sealed launch.';
+        }
+        $expectedFeatures = [
+            'update.admin_diagnostics',
+            'update.artifact_verification',
+            'update.entitlement_proxy',
+            'update.installer_orchestration',
+            'update.manifest_plan',
+            'update.preflight_rollback',
+        ];
+        $selectedFeatures = $launchContext['selected_features'] ?? [];
+        sort($expectedFeatures);
+        if (!is_array($selectedFeatures)) {
+            $errors[] = 'G4.8 selected feature closure must be an array.';
+        } else {
+            sort($selectedFeatures);
+        }
+        if (!is_array($selectedFeatures) || $selectedFeatures !== $expectedFeatures) {
+            $errors[] = 'G4.8 selected feature closure differs from the sealed launch.';
+        }
+        $requiredContractFiles = array_merge($requiredContractFiles, [
+            'src/Contracts/UpdateExecutionStore.php',
+            'src/Contracts/UpdateLifecycleAudit.php',
+            'src/Contracts/UpdateRecoveryBoundary.php',
+            'src/Data/UpdateCycleRequest.php',
+            'src/Data/UpdateCycleSnapshot.php',
+            'src/Enums/UpdateCycleState.php',
+            'src/Runtime/GovernedUpdateClientRuntime.php',
+            'src/Runtime/InMemoryUpdateExecutionStore.php',
+            'src/Runtime/RecordingUpdateLifecycleAudit.php',
+            'tests/Unit/GovernedUpdateClientRuntimeTest.php',
+            'tests/Unit/GovernedUpdateClientRuntimeFailsClosedTest.php',
+            'tests/Unit/GovernedUpdateClientRuntimeReplayTest.php',
+        ]);
+    } elseif ($launchRecord !== $contractSkeletonLaunch) {
+        $errors[] = 'coding_started requires a recognized sealed update-client launch record.';
+    }
     foreach ($requiredContractFiles as $file) {
         if (!is_file($file)) {
             $errors[] = "Missing required update-client contract skeleton file: {$file}";
@@ -87,5 +130,5 @@ if ($errors !== []) {
     exit(1);
 }
 echo $codingStarted
-    ? "Larena Update Client contract skeleton launch context is valid.\n"
+    ? "Larena Update Client sealed launch context is valid.\n"
     : "Larena Update Client clean pre-codegen baseline is valid.\n";

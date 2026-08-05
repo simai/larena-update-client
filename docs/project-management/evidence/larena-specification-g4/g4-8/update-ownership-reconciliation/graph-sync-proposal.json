@@ -1,0 +1,21 @@
+{
+  "schema": "larena.graph_sync_proposal.v1",
+  "package": "larena/update-client",
+  "batch": "larena-specification-g4/g4-8/update-ownership-reconciliation",
+  "canonical_update_allowed": false,
+  "canonical_update_requested": false,
+  "source_launch_record": "specs/project-management/larena-g4-8-update-ownership-reconciliation-launch.json",
+  "implemented_features": [
+    "update.artifact_verification",
+    "update.entitlement_proxy",
+    "update.installer_orchestration",
+    "update.manifest_plan",
+    "update.preflight_rollback"
+  ],
+  "proposal": {
+    "type": "revision_bound_implementation_evidence",
+    "summary": "Bind the local fixture update lifecycle to V-03 after exact package, server and Root acceptance.",
+    "requires_graph_change": false
+  },
+  "maximum_claim": "independently_verified_local_fixture_runtime"
+}

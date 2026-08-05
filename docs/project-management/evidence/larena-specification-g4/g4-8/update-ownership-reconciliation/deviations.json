@@ -1,0 +1,21 @@
+{
+  "schema": "larena.evidence_deviations.v1",
+  "package": "larena/update-client",
+  "batch": "larena-specification-g4/g4-8/update-ownership-reconciliation",
+  "deviations": [
+    {
+      "id": "fixture_runtime_only",
+      "status": "intentional_boundary",
+      "detail": "Persistence, audit and recovery collaborators are deterministic local fixtures; production adapters are not authorized by G4.8."
+    }
+  ],
+  "forbidden_behavior_confirmed_absent": [
+    "network_fetch_or_external_endpoint",
+    "real_artifact_download_or_extraction",
+    "installed_site_file_or_database_mutation",
+    "release_pointer_or_environment_mutation",
+    "direct_registration_authority_contact",
+    "real_signing_key_or_credential_access",
+    "production_installer_or_operational_readiness_claim"
+  ]
+}

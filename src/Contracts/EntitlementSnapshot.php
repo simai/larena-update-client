@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Larena\UpdateClient\Contracts;
 
-final readonly class EntitlementSnapshot
+use DateTimeImmutable;
+use Larena\Licensing\Contracts\EntitlementSnapshot as LicensingEntitlementSnapshot;
+use Larena\Licensing\Enums\EntitlementStatus;
+
+final readonly class EntitlementSnapshot implements LicensingEntitlementSnapshot
 {
     /**
      * @param list<string> $capabilities
@@ -17,6 +21,10 @@ final readonly class EntitlementSnapshot
         public bool $signed,
         public bool $signatureVerified,
         public bool $directRegistrationContact = false,
+        public EntitlementStatus $entitlementStatus = EntitlementStatus::Active,
+        public string $signingKeyId = 'update.platform',
+        public string $signatureValue = 'signature:entitlement',
+        public ?DateTimeImmutable $validUntil = null,
     ) {
     }
 
@@ -28,6 +36,34 @@ final readonly class EntitlementSnapshot
             && $this->redacted
             && $this->signed
             && $this->signatureVerified
-            && !$this->directRegistrationContact;
+            && !$this->directRegistrationContact
+            && $this->entitlementStatus->canUnlockPaidCapabilities()
+            && trim($this->signingKeyId) !== ''
+            && trim($this->signatureValue) !== '';
+    }
+
+    public function status(): EntitlementStatus
+    {
+        return $this->entitlementStatus;
+    }
+
+    public function keyId(): string
+    {
+        return $this->signingKeyId;
+    }
+
+    public function signature(): string
+    {
+        return $this->signatureValue;
+    }
+
+    public function capabilityKeys(): array
+    {
+        return $this->capabilities;
+    }
+
+    public function expiresAt(): ?DateTimeImmutable
+    {
+        return $this->validUntil;
     }
 }

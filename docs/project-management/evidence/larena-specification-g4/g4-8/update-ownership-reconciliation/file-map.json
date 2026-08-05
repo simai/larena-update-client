@@ -1,0 +1,33 @@
+{
+  "schema": "larena.evidence_file_map.v1",
+  "package": "larena/update-client",
+  "batch": "larena-specification-g4/g4-8/update-ownership-reconciliation",
+  "source_revision": "pending_seal",
+  "launch_record_ref": "specs/project-management/larena-g4-8-update-ownership-reconciliation-launch.json",
+  "source_files": [
+    "src/Contracts/EntitlementSnapshot.php",
+    "src/Contracts/UpdateClientRuntime.php",
+    "src/Contracts/UpdateExecutionStore.php",
+    "src/Contracts/UpdateLifecycleAudit.php",
+    "src/Contracts/UpdateRecoveryBoundary.php",
+    "src/Data/UpdateCycleRequest.php",
+    "src/Data/UpdateCycleSnapshot.php",
+    "src/Enums/UpdateCycleState.php",
+    "src/Runtime/GovernedUpdateClientRuntime.php",
+    "src/Runtime/InMemoryUpdateExecutionStore.php",
+    "src/Runtime/RecordingUpdateLifecycleAudit.php"
+  ],
+  "test_files": [
+    "tests/Unit/GovernedUpdateClientRuntimeTest.php",
+    "tests/Unit/GovernedUpdateClientRuntimeFailsClosedTest.php",
+    "tests/Unit/GovernedUpdateClientRuntimeReplayTest.php"
+  ],
+  "support_files": [
+    ".larena/launch-context.json",
+    "README.md",
+    "composer.json",
+    "composer.lock",
+    "module.yaml",
+    "scripts/validate-larena-package.php"
+  ]
+}

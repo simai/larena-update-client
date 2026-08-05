@@ -1,8 +1,8 @@
 package: larena/update-client
 title: Larena Update Client
-status: repository_prepared
+status: g4_8_local_fixture_runtime
 cluster: update-delivery
-batch: batch-0-clean-pre-codegen-baseline
+batch: g4-8-update-ownership-reconciliation
 features:
   - update.admin_diagnostics
   - update.artifact_verification
@@ -10,8 +10,18 @@ features:
   - update.installer_orchestration
   - update.manifest_plan
   - update.preflight_rollback
+  - update.local_fixture_cycle
+  - update.recoverable_retry
 runtime:
   php: "^8.3"
   laravel: "^13.0"
+runtime_boundaries:
+  canonical_local_runtime_owner: true
+  server_catalog_authority: false
+  network_fetch_enabled: false
+  real_artifact_apply_enabled: false
+  installed_site_mutation_enabled: false
+  reference_store: in_memory_only
+  production_ready: false
 evidence:
-  path: docs/project-management/evidence/update-delivery/batch-0/update-client-clean-baseline/
+  path: docs/project-management/evidence/larena-specification-g4/g4-8/update-ownership-reconciliation/
