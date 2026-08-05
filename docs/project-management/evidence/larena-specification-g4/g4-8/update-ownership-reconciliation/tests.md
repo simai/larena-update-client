@@ -13,6 +13,7 @@ Required package scenarios:
 - retry resumes without repeating completed operations;
 - unknown-cycle retry denial;
 - idempotent replay of an existing cycle.
+- stable generated plan identity when the underlying hash starts with a digit.
 
 Exact commands, counts, revisions and hashes remain pending the sealed package
 revision and will be retained by the canonical G4.8 evidence carrier.
