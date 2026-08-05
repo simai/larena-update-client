@@ -128,7 +128,7 @@ function g48_negative_fixture(
         true,
     );
     $manifestValue = new UpdateManifest('channel.stable.manifest', 'stable', ['larena/core'], 'signature:manifest', $manifest);
-    $planKey = 'update.plan.'.substr(hash('sha256', $manifestValue->manifestKey.'|'.$entitlement->snapshotKey), 0, 16);
+    $planKey = 'update.plan.p'.substr(hash('sha256', $manifestValue->manifestKey.'|'.$entitlement->snapshotKey), 0, 16);
     $artifactValue = new ArtifactVerificationResult(
         'artifact.fixture',
         'sha256:'.str_repeat('b', 64),

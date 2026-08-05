@@ -77,7 +77,7 @@ $replayRuntime = new GovernedUpdateClientRuntime(
 );
 $replayEntitlement = new EntitlementSnapshot('site.entitlement', 'site-fixture', ['update.install'], true, true, true);
 $replayManifest = new UpdateManifest('channel.stable.manifest', 'stable', ['larena/update-client', 'larena/core'], 'signature:manifest', true);
-$replayPlanKey = 'update.plan.'.substr(hash('sha256', $replayManifest->manifestKey.'|'.$replayEntitlement->snapshotKey), 0, 16);
+$replayPlanKey = 'update.plan.p'.substr(hash('sha256', $replayManifest->manifestKey.'|'.$replayEntitlement->snapshotKey), 0, 16);
 $replayArtifact = new ArtifactVerificationResult('artifact.fixture', 'sha256:'.str_repeat('c', 64), 'signature:artifact', $replayManifest->manifestKey, ArtifactVerificationStatus::Verified, true, true);
 $replayRequest = new UpdateCycleRequest(
     'user:1',

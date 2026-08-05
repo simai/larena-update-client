@@ -60,7 +60,7 @@ final readonly class GovernedUpdateClientRuntime implements UpdateClientRuntime
         sort($order, SORT_STRING);
 
         return new UpdatePlan(
-            planKey: 'update.plan.'.substr(hash('sha256', $manifest->manifestKey.'|'.$snapshot->snapshotKey), 0, 16),
+            planKey: 'update.plan.p'.substr(hash('sha256', $manifest->manifestKey.'|'.$snapshot->snapshotKey), 0, 16),
             manifest: $manifest,
             entitlement: $snapshot,
             status: $valid ? UpdatePlanStatus::ReadyForPreflight : UpdatePlanStatus::Blocked,

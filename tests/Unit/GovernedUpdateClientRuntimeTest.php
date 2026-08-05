@@ -136,7 +136,7 @@ $positiveManifest = new UpdateManifest(
     'signature:manifest',
     true,
 );
-$positivePlanKey = 'update.plan.'.substr(hash('sha256', $positiveManifest->manifestKey.'|'.$positiveEntitlement->snapshotKey), 0, 16);
+$positivePlanKey = 'update.plan.p'.substr(hash('sha256', $positiveManifest->manifestKey.'|'.$positiveEntitlement->snapshotKey), 0, 16);
 $positiveArtifact = new ArtifactVerificationResult(
     'artifact.update_client',
     'sha256:'.str_repeat('a', 64),
@@ -190,6 +190,17 @@ foreach ($positiveAudit->events() as $positiveEvent) {
     g48_positive_assert(($positiveEvent['correlation_ref'] ?? null) === 'correlation:update:g48', 'Every audit fact must preserve correlation.');
     g48_positive_assert(!str_contains(strtolower(json_encode($positiveEvent, JSON_THROW_ON_ERROR)), 'password'), 'Audit evidence must not expose secret fields.');
 }
+
+$digitLeadingEntitlement = new EntitlementSnapshot('root.entitlement', 'root-fixture', ['update.install'], true, true, true);
+$digitLeadingManifest = new UpdateManifest('channel.stable.root', 'stable', ['larena/core'], 'signature:manifest', true);
+$digitLeadingHash = hash('sha256', $digitLeadingManifest->manifestKey.'|'.$digitLeadingEntitlement->snapshotKey);
+g48_positive_assert(ctype_digit($digitLeadingHash[0]), 'Regression fixture must retain a digit-leading plan hash.');
+$digitLeadingPlan = $positiveRuntime->computePlan($digitLeadingManifest, $digitLeadingEntitlement);
+g48_positive_assert(
+    UpdateManifest::isStableKey($digitLeadingPlan->planKey)
+        && $digitLeadingPlan->planKey === 'update.plan.p'.substr($digitLeadingHash, 0, 16),
+    'Generated plan identity must remain a stable dotted ID when the raw hash starts with a digit.',
+);
 
 $unsafeAuditKeyRejected = false;
 try {
