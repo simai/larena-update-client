@@ -34,7 +34,12 @@
     "src/Runtime/RecordingUpdateLifecycleAudit.php",
     "tests/Unit/GovernedUpdateClientRuntimeTest.php",
     "tests/Unit/GovernedUpdateClientRuntimeFailsClosedTest.php",
-    "tests/Unit/GovernedUpdateClientRuntimeReplayTest.php"
+    "tests/Unit/GovernedUpdateClientRuntimeReplayTest.php",
+    "LICENSE",
+    "NOTICE",
+    "AUTHORS",
+    "CITATION.cff",
+    "REUSE.toml"
   ],
   "forbidden_files": [
     "config/*",
